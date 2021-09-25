@@ -15,10 +15,17 @@ int main(int argc, char *argv[])
 		switch(c)
 		{
 			case 'i':
+				printf("real user id: %d\n", getuid());
+				printf("effective user id: %d\n\n", geteuid());
+				printf("real group id: %d\n", getgid());
+				printf("effective group id: %d\n\n", getegid());
 				break;
 			case 's':
 				break;
 			case 'p':
+				printf("process id: %d\n", getpid());
+				printf("parent process id: %d\n", getppid());
+				printf("process group id: %d\n\n", getpgid(0));
 				break;
 			case 'u':
 				break;
