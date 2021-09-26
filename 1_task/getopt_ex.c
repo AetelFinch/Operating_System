@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <unistd.h>
+<<<<<<< Updated upstream
 #include <ulimit.h>
 #include <sys/types.h>
 
+=======
+#include <sys/types.h>
+>>>>>>> Stashed changes
 
 int main(int argc, char *argv[])
 {
