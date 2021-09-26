@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <ulimit.h>
 #include <sys/types.h>
-
+#include <sys/resource.h>
 
 int main(int argc, char *argv[])
 {
@@ -11,6 +11,8 @@ int main(int argc, char *argv[])
 	extern int optind, optopt, opterr;
 
 	char optstring[] = ":ispuU:cC:dvV:";
+
+	struct rlimit rlim;
 
 	while ((c = getopt(argc, argv, optstring)) != -1)
 	{
@@ -30,21 +32,19 @@ int main(int argc, char *argv[])
 				printf("process group id: %d\n\n", getpgid(0));
 				break;
 			case 'u':
-				struct rlimit rlim;
 				if (getrlimit(RLIMIT_FSIZE, &rlim) == 0)
 				{
-					print("soft file size limit of the process: %d\n", rlim.rlim_cur);
-					print("harg file size limit of the process: %d\n\n", rlim.rlim_max);
+					printf("soft file size limit of the process: %u\n", rlim.rlim_cur);
+					printf("harg file size limit of the process: %u\n\n", rlim.rlim_max);
 				}
 				break;
 			case 'U':
 				break;
 			case 'c':
-				struct rlimit rlim;
 				if (getrlimit(RLIMIT_CORE, &rlim) == 0)
 				{
-					print("soft core size limit of the process: %d\n", rlim.rlim_cur);
-					print("harg core size limit of the process: %d\n\n", rlim.rlim_max);
+					printf("soft core size limit of the process: %u\n", rlim.rlim_cur);
+					printf("harg core size limit of the process: %u\n\n", rlim.rlim_max);
 				}
 				break;
 			case 'C':
