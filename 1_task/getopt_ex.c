@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <ulimit.h>
 #include <sys/types.h>
@@ -13,6 +14,7 @@ int main(int argc, char *argv[])
 	char optstring[] = ":ispuU:cC:dvV:";
 
 	struct rlimit rlim;
+	char *cwd;
 
 	while ((c = getopt(argc, argv, optstring)) != -1)
 	{
@@ -50,10 +52,7 @@ int main(int argc, char *argv[])
 			case 'C':
 				break;
 			case 'd':
-				char *cwd;
-				size_t size = pathconf(".", _PC_PATH_MAX);
-
-				if ((cwd = getcwd(NULL, size)) == NULL) 
+				if ((cwd = getcwd(NULL, pathconf(".", _PC_PATH_MAX))) == NULL) 
 				{
 					perror("pwd");
 				}
