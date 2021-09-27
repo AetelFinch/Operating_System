@@ -50,6 +50,18 @@ int main(int argc, char *argv[])
 			case 'C':
 				break;
 			case 'd':
+				char *cwd;
+				size_t size = pathconf(".", _PC_PATH_MAX);
+
+				if ((cwd = getcwd(NULL, size)) == NULL) 
+				{
+					perror("pwd");
+				}
+				else
+				{
+					printf("%s\n", cwd);
+					free(cwd);
+				}
 				break;
 			case 'v':
 				break;
