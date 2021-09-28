@@ -59,7 +59,8 @@ int main(int argc, char *argv[])
 				if (getrlimit(RLIMIT_CORE, &rlim) == 0)
 				{
 					rlim.rlim_cur = atol(optarg);
-					setrlimit(RLIMIT_CORE, &rlim);
+					if (setrlimit(RLIMIT_CORE, &rlim) != 0)
+						fprintf(stderr, "incorrect value for -U option\n\n");
 				}
 				break;
 			case 'd':
@@ -84,8 +85,10 @@ int main(int argc, char *argv[])
 				putenv(optarg);
 				break;
 			case ':':
+				fprintf(stderr, "Option -%c requires an operand\n", optopt);
 				break;
 			case '?':
+				fprintf(stderr, "Unrecognized option: -%c\n", optopt);
 				break;
 		}
 	}
