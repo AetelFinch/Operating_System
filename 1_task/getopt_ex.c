@@ -50,6 +50,11 @@ int main(int argc, char *argv[])
 				}
 				break;
 			case 'C':
+				if (getrlimit(RLIMIT_CORE, &rlim) == 0)
+				{
+					rlim.rlim_cur = atol(optarg);
+					setrlimit(RLIMIT_CORE, &rlim);
+				}
 				break;
 			case 'd':
 				if ((cwd = getcwd(NULL, pathconf(".", _PC_PATH_MAX))) == NULL) 
