@@ -63,6 +63,11 @@ int main(int argc, char *argv[])
 				}
 				break;
 			case 'v':
+				printf("PATH: %s\n", getenv("HOME"));
+				printf("TERM: %s\n", getenv("TERM"));
+				printf("TZ: %s\n", getenv("TZ"));
+				printf("HOME: %s\n", getenv("HOME"));
+				printf("USER: %s\n\n", getenv("USER"));
 				break;
 			case 'V':
 				break;
