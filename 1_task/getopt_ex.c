@@ -70,6 +70,7 @@ int main(int argc, char *argv[])
 				printf("USER: %s\n\n", getenv("USER"));
 				break;
 			case 'V':
+				putenv(optarg);
 				break;
 			case ':':
 				break;
