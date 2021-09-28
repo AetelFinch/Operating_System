@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 				if (getrlimit(RLIMIT_FSIZE, &rlim) == 0)
 				{
 					rlim.rlim_cur = atol(optarg);
-					setrlimit(RLIMIT_FSIZE, &rlim);
+					printf("%d\n", setrlimit(RLIMIT_FSIZE, &rlim));
 				}
 				break;
 			case 'c':
