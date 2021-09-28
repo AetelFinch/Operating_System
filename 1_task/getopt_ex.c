@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
 				printf("effective group id: %d\n\n", getegid());
 				break;
 			case 's':
+				setpgid(getpid(), 0);
 				break;
 			case 'p':
 				printf("process id: %d\n", getpid());
@@ -41,6 +42,11 @@ int main(int argc, char *argv[])
 				}
 				break;
 			case 'U':
+				if (getrlimit(RLIMIT_FSIZE, &rlim) == 0)
+				{
+					rlim.rlim_cur = atol(optarg);
+					setrlimit(RLIMIT_FSIZE, &rlim);
+				}
 				break;
 			case 'c':
 				if (getrlimit(RLIMIT_CORE, &rlim) == 0)
