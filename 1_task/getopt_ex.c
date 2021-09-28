@@ -2,12 +2,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <ulimit.h>
+#include <errno.h>
 #include <sys/types.h>
 #include <sys/resource.h>
 
 int main(int argc, char *argv[])
 {
 	int c;
+	extern int errno;
 	extern char *optarg;
 	extern int optind, optopt, opterr;
 
@@ -45,7 +47,13 @@ int main(int argc, char *argv[])
 				if (getrlimit(RLIMIT_FSIZE, &rlim) == 0)
 				{
 					rlim.rlim_cur = atol(optarg);
-					setrlimit(RLIMIT_FSIZE, &rlim);
+					if (errno != 0)
+					{
+						fprintf(stderr, "incorrect value for -U option\n\n");
+						break;
+					}
+					if (setrlimit(RLIMIT_FSIZE, &rlim))
+						fprintf(stderr, "incorrect value for -U option\n\n");
 				}
 				break;
 			case 'c':
@@ -59,8 +67,7 @@ int main(int argc, char *argv[])
 				if (getrlimit(RLIMIT_CORE, &rlim) == 0)
 				{
 					rlim.rlim_cur = atol(optarg);
-					if (setrlimit(RLIMIT_CORE, &rlim) != 0)
-						fprintf(stderr, "incorrect value for -U option\n\n");
+					setrlimit(RLIMIT_CORE, &rlim);
 				}
 				break;
 			case 'd':
@@ -91,5 +98,6 @@ int main(int argc, char *argv[])
 				fprintf(stderr, "Unrecognized option: -%c\n", optopt);
 				break;
 		}
+		errno = 0;
 	}
 }
