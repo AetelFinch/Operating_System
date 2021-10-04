@@ -1,11 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <errno.h>
 #include <unistd.h>
 #include <sys/types.h>
 
 extern int errno;
 
-void check_uid()
+void check_uid(char *argv[])
 {
 	printf("real user id: %d\n", getuid());
 	printf("effective user id: %d\n\n", geteuid());
@@ -15,12 +16,12 @@ void check_uid()
 
 	if (file == NULL)
 	{
-		perror("can't open file");
+		perror("can't open file\n");
 		errno = 0;
 	}
 	else
 	{
-		print("file was opened");
+		printf("file was opened\n");
 		fclose(file);
 	}
 }
@@ -30,15 +31,15 @@ int main(int argc, char *argv[])
 {
 	if (argc <= 1)
 	{
-		printf("enter file");
+		printf("enter file\n");
 		exit(1);
 	}
 
-	check_uid();
+	check_uid(argv);
 
 	setuid(geteuid());
 
-	check_uid();
+	check_uid(argv);
 
 	return 0;
 }
