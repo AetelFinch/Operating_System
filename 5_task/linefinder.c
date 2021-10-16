@@ -119,6 +119,7 @@ int main(int argc, char *argv[])
 		actual_read = read(STDIN_FILENO, buffer, BUFFER_SIZE);
 		size_t num_line = convert_to_number(buffer, actual_read);
 
+
 		if (num_line == 0)
 			break;
 
