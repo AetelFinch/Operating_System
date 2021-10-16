@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types>
+#include <sys/types.h>
+#include <fcntl.h>
+#include <ctype.h>
 #include <unistd.h>
 
 #define BUFFER_SIZE 80
@@ -28,18 +30,18 @@ void table_push_back(size_t offset, size_t length)
 {
 	if (table.size == table.capacity)
 	{
-		table.lines = realloc(table.lines, sizeof(struct Lines) * capacity * REALLOC_COEF);
-		capacity *= REALLOC_COEF;
+		table.lines = realloc(table.lines, sizeof(struct Lines) * table.capacity * REALLOC_COEF);
+		table.capacity *= REALLOC_COEF;
 	}
 
-	table.lines[table.size]->offset = offset;
-	table.lines[table.size]->length = length;
+	table.lines[table.size].offset = offset;
+	table.lines[table.size].length = length;
 
 	++table.size;
 }
 
 
-size_t convert_to_number(char *buffer, num_digits)
+size_t convert_to_number(char *buffer, size_t num_digits)
 {
 	size_t number = 0;
 	for (int i = 0; i < num_digits; ++i)
@@ -63,7 +65,7 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	fd = open(argv[1], O_RDONLY, S_IRUSR);
+	int fd = open(argv[1], O_RDONLY);
 
 	if (fd == -1)
 	{
@@ -114,6 +116,12 @@ int main(int argc, char *argv[])
 	}
 
 
+	for (int i = 0; i < table.size; ++i)
+	{
+		printf("%u %u\n", table.lines[i].offset, table.lines[i].length);
+	}
+
+
 	while(1)
 	{
 		actual_read = read(STDIN_FILENO, buffer, BUFFER_SIZE);
@@ -130,12 +138,14 @@ int main(int argc, char *argv[])
 
 		--num_line;
 
-		size_t line_length = table.lines[num_line]->length;
+		size_t line_length = table.lines[num_line].length;
 		char *line = calloc(line_length + 1, sizeof(char));
 
-		lseek(fd, table[num_line]->offset, SEEK_SET);
-		read(fd, line, table[num_string]->length);
+		lseek(fd, table.lines[num_line].offset, SEEK_SET);
+		read(fd, line, table.lines[num_line].length);
 		printf("%s", line);
+
+		free(line);
 	}
 
 	return 0;
