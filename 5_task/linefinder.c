@@ -120,11 +120,6 @@ int main(int argc, char *argv[])
 		actual_read = read(STDIN_FILENO, buffer, BUFFER_SIZE);
 		size_t num_line = convert_to_number(buffer, actual_read);
 
-<<<<<<< HEAD
-=======
-		printf("num_line = %u\n", num_line);
->>>>>>> 2d83446d6840eaeccbaa422716b96d820f30a850
-
 		if (num_line == 0)
 			break;
 
