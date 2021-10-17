@@ -30,8 +30,8 @@ void table_push_back(size_t offset, size_t length)
 {
 	if (table.size == table.capacity)
 	{
-		table.lines = realloc(table.lines, sizeof(struct Lines) * table.capacity * REALLOC_COEF);
-		table.capacity *= REALLOC_COEF;
+		table.capacity = table.capacity * REALLOC_COEF + 1;
+		table.lines = realloc(table.lines, sizeof(struct Lines) * table.capacity);
 	}
 
 	table.lines[table.size].offset = offset;
@@ -115,35 +115,31 @@ int main(int argc, char *argv[])
 			break;
 	}
 
-
-	for (int i = 0; i < table.size; ++i)
-	{
-		printf("%u %u\n", table.lines[i].offset, table.lines[i].length);
-	}
-
-
 	while(1)
 	{
 		actual_read = read(STDIN_FILENO, buffer, BUFFER_SIZE);
 		size_t num_line = convert_to_number(buffer, actual_read);
 
+<<<<<<< HEAD
+=======
+		printf("num_line = %u\n", num_line);
+>>>>>>> 2d83446d6840eaeccbaa422716b96d820f30a850
 
 		if (num_line == 0)
 			break;
 
 		if (table.size < num_line)
 		{
-			printf("please, enter real number string in file");
+			printf("please, enter real number string in file\n");
 			continue;
 		}
-
 		--num_line;
 
 		size_t line_length = table.lines[num_line].length;
 		char *line = calloc(line_length + 1, sizeof(char));
 
 		lseek(fd, table.lines[num_line].offset, SEEK_SET);
-		read(fd, line, table.lines[num_line].length);
+		read(fd, line, line_length);
 		printf("%s", line);
 
 		free(line);
