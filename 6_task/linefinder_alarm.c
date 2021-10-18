@@ -134,10 +134,10 @@ int main(int argc, char *argv[])
 				++string_len;
 			}
 		}
-
 		if (actual_read < BUFFER_SIZE) //file was read
 			break;
 	}
+
 
 	signal(SIGALRM, output_file);
 
