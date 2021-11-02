@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 	switch(fork())
 	{
 		case 0:
-			execl("/usr/bin/cat", argv[1], (char *) 0);
+			execl("/usr/bin/cat", " ",  argv[1], (char *) 0);
 			exit(100);
 		default:
 			wait(&status);
