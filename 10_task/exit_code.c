@@ -12,12 +12,17 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	int status;
+	char *arguments[argc];
+	for (int i = 0; i < argc - 1; ++i)
+		arguments[i] = argv[i + 1];
+	arguments[argc - 1] = NULL;
+
+	int status = 0;
 	switch(fork())
 	{
 		case 0:
-			execv(argv[1], " ",  argv + 2, (char *) 0);
-			exit(100);
+			execv(argv[1], arguments);
+			exit(1);
 		default:
 			wait(&status);
 			printf("status = %d\n", status);
